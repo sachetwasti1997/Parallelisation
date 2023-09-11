@@ -31,7 +31,7 @@ public class MergeSortFork extends RecursiveAction {
 
         invokeAll(task, task1);
 
-        merge(0, middle, nums.length);
+        merge(left, right, nums);
     }
 
     private void mergeSort(int[] nums) {
@@ -41,35 +41,23 @@ public class MergeSortFork extends RecursiveAction {
         int [] right = Arrays.copyOfRange(nums, middleIndex, nums.length);
         mergeSort(left);
         mergeSort(right);
-        merge(0, middleIndex, nums.length);
+        merge(left, right, nums);
     }
 
-
-    private void merge(int low, int middle, int high) {
-        for (int i=low; i<high; i++) {
-            tempArr[i] = nums[i];
-        }
-        int i = low, k = low;
-        int j = middle + 1;
-        while (i <= middle && j <= high) {
-            if (tempArr[i] <= tempArr[j]) {
-                nums[k] = tempArr[i];
-                ++i;
-            } else {
-                nums[k] = tempArr[j];
-                ++j;
+    private void merge(int[] left, int[] right, int[] originalArray) {
+        int i = 0, j = 0, k = 0;
+        while (i < left.length && j < right.length) {
+            if (left[i] < right[j]) {
+                originalArray[k++] = left[i++];
+            }else {
+                originalArray[k++] = right[j++];
             }
-            k++;
         }
-        while (i <= middle) {
-            nums[k] = tempArr[i];
-            k++;
-            i++;
+        while (i < left.length) {
+            originalArray[k++] = left[i++];
         }
-        while(j <= high) {
-            nums[k] = tempArr[j];
-            k++;
-            j++;
+        while (j < right.length) {
+            originalArray[k++] = right[j++];
         }
     }
 
