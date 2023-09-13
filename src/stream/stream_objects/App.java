@@ -1,9 +1,6 @@
 package stream.stream_objects;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class App {
@@ -39,5 +36,33 @@ public class App {
                 .map(Book::getAuthor)
                 .forEach(System.out::println);
 
+        System.out.println("-------------------------------------");
+
+        Map<Type, List<Book>> booksByType = books.stream().collect(Collectors.groupingBy(Book::getType));
+        booksByType.entrySet().forEach(System.out::println);
+
+        System.out.println("-------------------------------------");
+
+        List<String> authors = books.stream().filter(book -> book.getPages() > 500)
+                .limit(2)
+                .map(Book::getTitle).toList();
+        authors.forEach(System.out::println);
+
+        System.out.println("-------------------------------------");
+
+        List<Book> filtered = books.stream().filter(book -> book.getTitle().split(" ").length == 2).toList();
+        filtered.forEach(System.out::println);
+
+        System.out.println("-------------------------------------");
+        //external iteration
+        List<String> titles = new ArrayList<>();
+        Iterator<Book> iterator = books.iterator();
+        while (iterator.hasNext()) {
+            titles.add(iterator.next().getTitle());
+        }
+
+        //stream API - internal iteration
+        List<String> titles2 = books.stream().map(Book::getTitle).toList();
+        titles2.forEach(System.out::println);
     }
 }
